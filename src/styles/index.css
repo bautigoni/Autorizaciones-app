@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body, #root { height: 100%; }
+  body {
+    @apply bg-cream-50 text-ink-900 font-sans antialiased;
+    background-image:
+      radial-gradient(at 0% 0%, rgba(255, 183, 133, 0.18), transparent 50%),
+      radial-gradient(at 100% 0%, rgba(178, 214, 164, 0.16), transparent 50%);
+    background-attachment: fixed;
+  }
+  h1, h2, h3, h4 { @apply font-display tracking-tight; }
+  *:focus-visible { outline: none; box-shadow: 0 0 0 4px rgba(255, 122, 46, 0.25); border-radius: 12px; }
+
+  /* Hide native input arrows on number, but keep custom UIs */
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+  /* Style native date inputs minimally; we mostly use custom */
+  input[type='date'], input[type='time'] {
+    @apply font-sans;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-white/90 backdrop-blur-sm border border-warm-line/70 rounded-3xl shadow-soft;
+  }
+  .card-gradient {
+    @apply bg-gradient-soft border border-peach-200/60 rounded-3xl shadow-soft;
+  }
+  .hero-gradient {
+    @apply bg-gradient-to-br from-peach-300 via-peach-400 to-peach-500 text-white;
+  }
+  .scrollbar-thin::-webkit-scrollbar { width: 8px; height: 8px; }
+  .scrollbar-thin::-webkit-scrollbar-thumb { @apply bg-peach-200 rounded-full; }
+  .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { scrollbar-width: none; }
+}
