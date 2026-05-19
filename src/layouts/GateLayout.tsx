@@ -1,14 +1,12 @@
 import React from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { Logo } from '../components/Logo';
-import { Avatar } from '../components/Avatar';
 import { useAuth } from '../services/auth';
-import { I } from '../components/Icons';
+import { UserMenu } from '../components/UserMenu';
 import { roleLabel } from './InternalLayout';
 
 export function GateLayout() {
   const { user, logout } = useAuth();
-  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-cream-50 flex flex-col">
@@ -17,7 +15,7 @@ export function GateLayout() {
           <div className="flex items-center gap-3">
             <Logo variant="mark" size={36} />
             <div className="leading-tight">
-              <div className="font-extrabold tracking-tight">Portería · Salida Segura</div>
+              <div className="font-extrabold tracking-tight">Portería · NexoEscolar</div>
               <div className="text-[11px] text-white/60 font-medium">Validación de retiros</div>
             </div>
           </div>
@@ -26,11 +24,13 @@ export function GateLayout() {
               <span className="h-2 w-2 rounded-full bg-sage-300 animate-pulse" />
               <span className="text-xs font-semibold">{new Date().toLocaleDateString('es-AR', { weekday: 'long', day: '2-digit', month: 'long' })}</span>
             </div>
-            <button onClick={logout} className="flex items-center gap-2 pl-2 pr-3 h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-sm font-semibold">
-              <Avatar name={user?.full_name ?? ''} color={user?.avatar_color ?? undefined} size={28} />
-              <span className="hidden sm:inline">{roleLabel(user?.role ?? '')}</span>
-              <I.Logout size={16} />
-            </button>
+            <UserMenu
+              name={user?.full_name ?? ''}
+              role={roleLabel(user?.role ?? '')}
+              avatarColor={user?.avatar_color ?? undefined}
+              onLogout={logout}
+              variant="dark"
+            />
           </div>
         </div>
       </header>

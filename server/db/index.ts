@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = path.resolve(__dirname, '../../data');
-const DB_PATH = path.join(DATA_DIR, 'salida-segura.db');
+const DB_PATH = path.join(DATA_DIR, 'nexoescolar.db');
 
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 
@@ -25,5 +25,5 @@ export function nextAuthCode(): string {
     const m = row.code.match(/(\d+)$/);
     if (m) n = parseInt(m[1], 10) + 1;
   }
-  return 'SS-' + String(n).padStart(4, '0');
+  return 'NE-' + String(n).padStart(4, '0');
 }

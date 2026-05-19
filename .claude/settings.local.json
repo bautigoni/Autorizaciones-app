@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc *)",
+      "Bash(npm run *)",
+      "Bash(node -e ' *)",
+      "Bash(python *)",
+      "Bash(pip install *)",
+      "Bash(node -e \"const p=require\\('./package.json'\\); console.log\\('react-router-dom:', p.dependencies['react-router-dom']\\)\")",
+      "Bash(node -e \"const p=require\\('./node_modules/react-router-dom/package.json'\\); console.log\\('version:', p.version\\)\")",
+      "Bash(tasklist /FI \"IMAGENAME eq node.exe\")",
+      "PowerShell(Get-Process *)"
+    ]
+  }
+}

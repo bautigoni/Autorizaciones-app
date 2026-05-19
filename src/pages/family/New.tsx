@@ -120,7 +120,7 @@ export function FamilyNew() {
   }
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 max-w-2xl">
       <button onClick={() => navigate(-1)} className="inline-flex items-center gap-1.5 text-sm font-semibold text-ink-500 hover:text-peach-700">
         <I.ArrowLeft size={16} /> Volver
       </button>

@@ -1,4 +1,4 @@
--- Salida Segura · SQLite schema
+-- NexoEscolar · SQLite schema
 PRAGMA foreign_keys = ON;
 
 CREATE TABLE IF NOT EXISTS users (
@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS users (
   email TEXT NOT NULL UNIQUE,
   password TEXT NOT NULL, -- plaintext only for demo seed
   full_name TEXT NOT NULL,
-  role TEXT NOT NULL CHECK (role IN ('family','preceptor','secretary','gate','admin')),
+  role TEXT NOT NULL CHECK (role IN ('family','preceptor','secretary')),
   phone TEXT,
   avatar_color TEXT,
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
@@ -77,6 +77,19 @@ CREATE TABLE IF NOT EXISTS auth_history (
 );
 
 CREATE INDEX IF NOT EXISTS idx_hist_auth ON auth_history(authorization_id);
+
+CREATE TABLE IF NOT EXISTS notifications (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  type TEXT NOT NULL DEFAULT 'info',
+  title TEXT NOT NULL,
+  body TEXT,
+  authorization_id INTEGER REFERENCES authorizations(id) ON DELETE SET NULL,
+  read INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE INDEX IF NOT EXISTS idx_notif_user ON notifications(user_id);
 
 CREATE TABLE IF NOT EXISTS attachments (
   id INTEGER PRIMARY KEY AUTOINCREMENT,

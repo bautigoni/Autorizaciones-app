@@ -42,7 +42,7 @@ export function FamilyList() {
   }), [items, tab, q]);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 max-w-4xl">
       <div>
         <h1 className="text-2xl font-extrabold text-ink-900">Mis autorizaciones</h1>
         <p className="text-sm text-ink-500 mt-0.5">Historial completo de retiros solicitados.</p>
@@ -77,7 +77,7 @@ export function FamilyList() {
           description={q ? 'Probá ajustar la búsqueda o el filtro seleccionado.' : 'No tenés autorizaciones en este estado.'}
         />
       ) : (
-        <div className="space-y-2.5">
+        <div className="space-y-2.5 sm:grid sm:grid-cols-2 sm:gap-3 sm:space-y-0 lg:grid-cols-1 lg:space-y-2.5 lg:block">
           {filtered.map(a => (
             <Link key={a.id} to={`/familia/autorizaciones/${a.id}`} className="card p-4 flex items-center gap-3 hover:shadow-glow transition">
               <Avatar name={a.student.full_name} color={a.student.avatar_color} size={44} />

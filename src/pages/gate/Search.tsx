@@ -61,7 +61,7 @@ export function GateSearch() {
           <Input
             autoFocus
             icon={<I.Search size={20} />}
-            placeholder="Nombre, DNI, curso, código (SS-0001) o DNI del adulto..."
+            placeholder="Nombre, DNI, curso, código (NE-0001) o DNI del adulto..."
             value={q}
             onChange={e => setQ(e.target.value)}
             className="!text-base"

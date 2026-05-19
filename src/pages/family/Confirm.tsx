@@ -16,7 +16,7 @@ export function FamilyConfirm() {
   if (!a) return <LoadingState />;
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 max-w-2xl mx-auto">
       <div className="card-gradient relative overflow-hidden p-8 text-center">
         <div className="absolute -top-12 -right-12 w-48 h-48 rounded-full bg-sage-300/30 blur-3xl" />
         <div className="relative">

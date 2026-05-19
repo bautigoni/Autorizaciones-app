@@ -1,4 +1,4 @@
-export type Role = 'family' | 'preceptor' | 'secretary' | 'gate' | 'admin';
+export type Role = 'family' | 'preceptor' | 'secretary';
 
 export type AuthStatus =
   | 'pending'
@@ -46,7 +46,7 @@ export interface AuthorizedAdult {
 
 export interface Authorization {
   id: number;
-  code: string; // human readable, e.g. SS-0421
+  code: string; // human readable, e.g. NE-0421
   student_id: number;
   created_by_user_id: number;
   pickup_adult_name: string;
@@ -103,4 +103,15 @@ export interface DashboardMetrics {
   completed: number;
   expired: number;
   todayTotal: number;
+}
+
+export interface AppNotification {
+  id: number;
+  user_id: number;
+  type: 'auth_approved' | 'auth_rejected' | 'auth_observed' | 'auth_completed' | 'auth_pending' | 'auth_cancelled' | 'info';
+  title: string;
+  body: string | null;
+  authorization_id: number | null;
+  read: boolean;
+  created_at: string;
 }

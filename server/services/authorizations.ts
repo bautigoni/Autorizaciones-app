@@ -172,7 +172,7 @@ export function registerWithdrawal(id: number, actorId: number): AuthorizationFu
   db.prepare(`
     INSERT INTO auth_history (authorization_id, actor_user_id, action, from_status, to_status, comment)
     VALUES (?, ?, 'withdrawn', 'approved', 'completed', ?)
-  `).run(id, actorId, 'Retiro registrado en portería');
+  `).run(id, actorId, 'Retiro registrado');
   return getAuthorization(id);
 }
 

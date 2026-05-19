@@ -41,7 +41,7 @@ export function FamilyDetail() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 max-w-2xl">
       <button onClick={() => navigate(-1)} className="inline-flex items-center gap-1.5 text-sm font-semibold text-ink-500 hover:text-peach-700">
         <I.ArrowLeft size={16} /> Volver
       </button>
@@ -142,7 +142,7 @@ export function actionLabel(a: string): string {
     rejected: 'Rechazada por el colegio',
     observed: 'Observada · faltan datos',
     cancelled: 'Cancelada por la familia',
-    withdrawn: 'Retiro registrado en portería',
+    withdrawn: 'Retiro registrado por el colegio',
     expired: 'Vencida automáticamente',
     edited: 'Solicitud editada',
     note_added: 'Nota interna agregada',

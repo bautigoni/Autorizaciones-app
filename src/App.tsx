@@ -11,16 +11,13 @@ import { FamilyNew } from './pages/family/New';
 import { FamilyDetail } from './pages/family/Detail';
 import { FamilyConfirm } from './pages/family/Confirm';
 
-// Internal (preceptor, secretary, admin)
+// Internal (preceptor, secretary)
 import { InternalLayout } from './layouts/InternalLayout';
 import { InternalDashboard } from './pages/internal/Dashboard';
 import { InternalTable } from './pages/internal/Table';
 import { InternalAuthDetail } from './pages/internal/AuthDetail';
 import { InternalStudent } from './pages/internal/Student';
 
-// Gate
-import { GateLayout } from './layouts/GateLayout';
-import { GateSearch } from './pages/gate/Search';
 
 export function App() {
   const { user } = useAuth();
@@ -39,16 +36,11 @@ export function App() {
       </Route>
 
       {/* Internal staff routes */}
-      <Route path="/cole" element={<RequireRole roles={['preceptor', 'secretary', 'admin']}><InternalLayout /></RequireRole>}>
+      <Route path="/cole" element={<RequireRole roles={['preceptor', 'secretary']}><InternalLayout /></RequireRole>}>
         <Route index element={<InternalDashboard />} />
         <Route path="autorizaciones" element={<InternalTable />} />
         <Route path="autorizaciones/:id" element={<InternalAuthDetail />} />
         <Route path="alumnos/:id" element={<InternalStudent />} />
-      </Route>
-
-      {/* Gate */}
-      <Route path="/porteria" element={<RequireRole roles={['gate', 'admin']}><GateLayout /></RequireRole>}>
-        <Route index element={<GateSearch />} />
       </Route>
 
       <Route path="/" element={<RoleHome />} />
@@ -61,7 +53,6 @@ function RoleHome() {
   const { user } = useAuth();
   if (!user) return <Navigate to="/login" replace />;
   if (user.role === 'family') return <Navigate to="/familia" replace />;
-  if (user.role === 'gate') return <Navigate to="/porteria" replace />;
   return <Navigate to="/cole" replace />;
 }
 

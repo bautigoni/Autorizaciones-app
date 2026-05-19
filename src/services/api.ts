@@ -1,11 +1,11 @@
 import type {
-  AuthorizationFull, DashboardMetrics, Student, AuthorizedAdult, User, AuthStatus,
+  AuthorizationFull, DashboardMetrics, Student, AuthorizedAdult, User, AuthStatus, AppNotification,
 } from '@shared/types';
 
 const BASE = '/api';
 
 function userId(): number | null {
-  const raw = localStorage.getItem('salida-segura.user');
+  const raw = localStorage.getItem('nexoescolar.user');
   if (!raw) return null;
   try { return JSON.parse(raw).id; } catch { return null; }
 }
@@ -67,4 +67,11 @@ export const api = {
 
   metrics: (date?: string) => req<DashboardMetrics>('/metrics' + (date ? `?date=${date}` : '')),
   metricsWeekly: () => req<(DashboardMetrics & { date: string })[]>('/metrics/weekly'),
+
+  listNotifications: () => req<AppNotification[]>('/notifications'),
+  getUnreadNotificationsCount: () => req<{ count: number }>('/notifications/unread-count'),
+  markNotificationRead: (id: number) =>
+    req<{ ok: boolean }>(`/notifications/${id}/read`, { method: 'PATCH', body: '{}' }),
+  markAllNotificationsRead: () =>
+    req<{ ok: boolean }>('/notifications/read-all', { method: 'POST', body: '{}' }),
 };

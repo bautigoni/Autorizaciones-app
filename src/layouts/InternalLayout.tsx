@@ -1,9 +1,11 @@
-import React from 'react';
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useCallback } from 'react';
+import { NavLink, Outlet } from 'react-router-dom';
 import { Logo } from '../components/Logo';
-import { Avatar } from '../components/Avatar';
 import { useAuth } from '../services/auth';
 import { I } from '../components/Icons';
+import { UserMenu } from '../components/UserMenu';
+import { NotificationDrawer } from '../components/NotificationDrawer';
+import { api } from '../services/api';
 
 const NAV = [
   { to: '/cole', label: 'Dashboard', icon: I.Home, end: true },
@@ -12,7 +14,17 @@ const NAV = [
 
 export function InternalLayout() {
   const { user, logout } = useAuth();
-  const navigate = useNavigate();
+  const [notifsOpen, setNotifsOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  const refreshCount = useCallback(async () => {
+    try {
+      const { count } = await api.getUnreadNotificationsCount();
+      setUnreadCount(count);
+    } catch {}
+  }, []);
+
+  useEffect(() => { refreshCount(); }, [refreshCount]);
 
   return (
     <div className="min-h-screen flex bg-cream-50">
@@ -43,27 +55,65 @@ export function InternalLayout() {
               </NavLink>
             );
           })}
+
+          {/* Notification button in sidebar */}
+          <button
+            onClick={() => setNotifsOpen(true)}
+            className="w-full flex items-center gap-3 px-3 h-11 rounded-2xl text-sm font-semibold text-ink-700 hover:bg-cream-100 transition"
+          >
+            <div className="relative">
+              <I.Bell size={18} />
+              {unreadCount > 0 && (
+                <span className="absolute -top-1 -right-1.5 min-w-[14px] h-3.5 rounded-full bg-coral-500 text-white text-[8px] font-bold flex items-center justify-center px-0.5">
+                  {unreadCount > 9 ? '9+' : unreadCount}
+                </span>
+              )}
+            </div>
+            Notificaciones
+            {unreadCount > 0 && (
+              <span className="ml-auto bg-coral-100 text-coral-700 text-xs font-bold px-1.5 py-0.5 rounded-full">
+                {unreadCount}
+              </span>
+            )}
+          </button>
         </nav>
         <div className="p-3 border-t border-warm-line">
-          <button onClick={logout} className="w-full flex items-center gap-3 px-3 h-11 rounded-2xl text-sm font-semibold text-ink-700 hover:bg-cream-100">
-            <Avatar name={user?.full_name ?? ''} color={user?.avatar_color ?? undefined} size={28} />
-            <div className="flex-1 text-left leading-tight">
-              <div className="text-sm">{user?.full_name}</div>
-              <div className="text-[11px] text-ink-400 font-normal">{roleLabel(user?.role ?? '')}</div>
-            </div>
-            <I.Logout size={16} />
-          </button>
+          <UserMenu
+            name={user?.full_name ?? ''}
+            role={roleLabel(user?.role ?? '')}
+            avatarColor={user?.avatar_color ?? undefined}
+            onLogout={logout}
+            variant="row"
+            dropUp
+          />
         </div>
       </aside>
 
       <div className="flex-1 flex flex-col min-w-0">
         {/* Mobile top bar */}
         <header className="lg:hidden sticky top-0 z-30 bg-white/85 backdrop-blur-lg border-b border-warm-line">
-          <div className="px-4 h-16 flex items-center justify-between">
+          <div className="px-4 h-16 flex items-center justify-between gap-3">
             <Logo variant="lockup" size={34} />
-            <button onClick={logout} className="h-10 w-10 rounded-full hover:bg-cream-100 flex items-center justify-center text-ink-500" aria-label="Cerrar sesión">
-              <Avatar name={user?.full_name ?? ''} color={user?.avatar_color ?? undefined} size={32} />
-            </button>
+            <div className="flex items-center gap-1.5 shrink-0">
+              <button
+                onClick={() => setNotifsOpen(true)}
+                className="h-10 w-10 rounded-full hover:bg-cream-100 flex items-center justify-center text-ink-500 relative"
+                aria-label="Notificaciones"
+              >
+                <I.Bell size={18} />
+                {unreadCount > 0 && (
+                  <span className="absolute top-1.5 right-1.5 min-w-[14px] h-3.5 rounded-full bg-coral-500 text-white text-[8px] font-bold flex items-center justify-center px-0.5">
+                    {unreadCount > 9 ? '9+' : unreadCount}
+                  </span>
+                )}
+              </button>
+              <UserMenu
+                name={user?.full_name ?? ''}
+                role={roleLabel(user?.role ?? '')}
+                avatarColor={user?.avatar_color ?? undefined}
+                onLogout={logout}
+              />
+            </div>
           </div>
           <nav className="px-2 pb-2 flex gap-1 overflow-x-auto no-scrollbar">
             {NAV.map(item => {
@@ -91,6 +141,12 @@ export function InternalLayout() {
           <Outlet />
         </main>
       </div>
+
+      <NotificationDrawer
+        open={notifsOpen}
+        onClose={() => setNotifsOpen(false)}
+        onCountChange={setUnreadCount}
+      />
     </div>
   );
 }
@@ -98,6 +154,5 @@ export function InternalLayout() {
 export function roleLabel(r: string) {
   return ({
     family: 'Familia', preceptor: 'Preceptor/a', secretary: 'Secretaría',
-    gate: 'Portería', admin: 'Dirección',
   } as Record<string, string>)[r] ?? r;
 }

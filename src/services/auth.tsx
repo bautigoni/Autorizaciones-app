@@ -12,7 +12,7 @@ interface AuthCtx {
 }
 
 const Ctx = createContext<AuthCtx | null>(null);
-const KEY = 'salida-segura.user';
+const KEY = 'nexoescolar.user';
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(() => {
