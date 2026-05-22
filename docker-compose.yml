@@ -1,0 +1,12 @@
+services:
+  autorizaciones:
+    build: .
+    container_name: autorizaciones
+    restart: unless-stopped
+    ports:
+      - "3002:3000"
+    volumes:
+      - ./data:/app/data
+    environment:
+      PORT: "3000"
+      NODE_ENV: production
