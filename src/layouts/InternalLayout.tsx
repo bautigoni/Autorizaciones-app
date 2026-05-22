@@ -10,6 +10,7 @@ import { api } from '../services/api';
 const NAV = [
   { to: '/cole', label: 'Dashboard', icon: I.Home, end: true },
   { to: '/cole/autorizaciones', label: 'Autorizaciones', icon: I.List },
+  { to: '/cole/analytics', label: 'Analítica', icon: I.Chart },
 ];
 
 export function InternalLayout() {
@@ -29,9 +30,9 @@ export function InternalLayout() {
   return (
     <div className="min-h-screen flex bg-cream-50">
       {/* Sidebar */}
-      <aside className="hidden lg:flex w-64 flex-col bg-white/80 border-r border-warm-line backdrop-blur-sm">
-        <div className="p-5 border-b border-warm-line">
-          <Logo variant="lockup" size={38} />
+      <aside className="hidden lg:flex w-[264px] xl:w-[280px] shrink-0 flex-col bg-white/80 border-r border-warm-line backdrop-blur-sm">
+        <div className="px-5 h-[72px] flex items-center border-b border-warm-line">
+          <Logo variant="lockup" size={33} />
         </div>
         <nav className="flex-1 p-3 space-y-1">
           {NAV.map(item => {
@@ -92,8 +93,8 @@ export function InternalLayout() {
       <div className="flex-1 flex flex-col min-w-0">
         {/* Mobile top bar */}
         <header className="lg:hidden sticky top-0 z-30 bg-white/85 backdrop-blur-lg border-b border-warm-line">
-          <div className="px-4 h-16 flex items-center justify-between gap-3">
-            <Logo variant="lockup" size={34} />
+          <div className="px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
+            <Logo variant="lockup" size={28} />
             <div className="flex items-center gap-1.5 shrink-0">
               <button
                 onClick={() => setNotifsOpen(true)}
@@ -137,7 +138,7 @@ export function InternalLayout() {
           </nav>
         </header>
 
-        <main className="flex-1 overflow-y-auto p-4 lg:p-8 max-w-7xl mx-auto w-full">
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-10 max-w-[1400px] mx-auto w-full">
           <Outlet />
         </main>
       </div>

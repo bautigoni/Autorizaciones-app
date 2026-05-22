@@ -6,6 +6,10 @@ import {
   createAuthorization, updateStatus, addNote, registerWithdrawal,
   updateAuthorization, cancelAuthorization, metricsForDate, expireOld,
 } from './services/authorizations.js';
+import {
+  analyticsSummary, pickupsOverTime, statusBreakdown,
+  peakTimes, topStudents, topFamilies,
+} from './services/analytics.js';
 
 const app = express();
 app.use(cors());
@@ -203,6 +207,40 @@ app.get('/api/metrics/weekly', (req, res) => {
     days.push({ date: ds, ...m });
   }
   res.json(days);
+});
+
+// --- Analytics (preceptor / secretary dashboards)
+function analyticsRange(req: { query: Record<string, any> }) {
+  return {
+    from: req.query.from ? String(req.query.from) : undefined,
+    to: req.query.to ? String(req.query.to) : undefined,
+  };
+}
+
+app.get('/api/analytics/summary', (req, res) => {
+  res.json(analyticsSummary(analyticsRange(req)));
+});
+
+app.get('/api/analytics/pickups-over-time', (req, res) => {
+  const raw = String(req.query.granularity ?? 'day');
+  const granularity = (['day', 'week', 'month'].includes(raw) ? raw : 'day') as 'day' | 'week' | 'month';
+  res.json(pickupsOverTime(analyticsRange(req), granularity));
+});
+
+app.get('/api/analytics/status-breakdown', (req, res) => {
+  res.json(statusBreakdown(analyticsRange(req)));
+});
+
+app.get('/api/analytics/peak-times', (req, res) => {
+  res.json(peakTimes(analyticsRange(req)));
+});
+
+app.get('/api/analytics/top-students', (req, res) => {
+  res.json(topStudents(analyticsRange(req)));
+});
+
+app.get('/api/analytics/top-families', (req, res) => {
+  res.json(topFamilies(analyticsRange(req)));
 });
 
 // --- Notifications

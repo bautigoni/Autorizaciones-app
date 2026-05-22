@@ -30,74 +30,82 @@ export function FamilyDashboard() {
   const today = todayISO();
   const upcoming = auths.filter(a => a.date >= today && ['pending', 'approved', 'observed'].includes(a.status));
 
-  const statusCounts = {
-    pending: auths.filter(a => a.status === 'pending').length,
-    approved: auths.filter(a => a.status === 'approved').length,
-    completed: auths.filter(a => a.status === 'completed').length,
-  };
+  const stats = [
+    { label: 'Pendientes', count: auths.filter(a => a.status === 'pending').length, color: 'text-amber-600', bg: 'bg-amber-50', icon: <I.Clock size={18} /> },
+    { label: 'Aprobadas', count: auths.filter(a => a.status === 'approved').length, color: 'text-sage-600', bg: 'bg-sage-100', icon: <I.CheckCircle size={18} /> },
+    { label: 'Completadas', count: auths.filter(a => a.status === 'completed').length, color: 'text-ink-500', bg: 'bg-cream-200', icon: <I.Shield size={18} /> },
+  ];
 
   return (
-    <div className="space-y-6">
-      {/* Hero card — full width */}
-      <div className="relative overflow-hidden card-gradient p-6 lg:p-8">
-        <div className="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-peach-300/30 blur-3xl pointer-events-none" />
-        <div className="absolute -left-8 bottom-0 w-48 h-48 rounded-full bg-sage-300/20 blur-3xl pointer-events-none" />
-        <div className="relative lg:flex lg:items-center lg:justify-between lg:gap-8">
-          <div className="flex-1">
+    <div className="space-y-6 lg:space-y-8">
+      {/* ── Hero ── */}
+      <section className="relative overflow-hidden card-gradient p-6 sm:p-8 lg:p-10">
+        <div className="absolute -right-20 -top-24 w-72 h-72 rounded-full bg-peach-300/30 blur-3xl pointer-events-none" />
+        <div className="absolute -left-10 bottom-0 w-56 h-56 rounded-full bg-sage-300/20 blur-3xl pointer-events-none" />
+        <div className="relative lg:flex lg:items-center lg:justify-between lg:gap-12">
+          <div className="flex-1 min-w-0">
             <div className="text-sm font-semibold text-peach-700">
               Hola, {user?.full_name.split(' ')[0]} 👋
             </div>
-            <h1 className="font-display text-2xl lg:text-3xl font-extrabold text-ink-900 mt-1 leading-tight">
+            <h1 className="font-display text-2xl sm:text-3xl lg:text-[2.3rem] font-extrabold text-ink-900 mt-1.5 leading-[1.12]">
               {upcoming.length > 0
                 ? `Tenés ${upcoming.length} retiro${upcoming.length > 1 ? 's' : ''} próximo${upcoming.length > 1 ? 's' : ''}`
                 : 'Todo en orden por ahora ✨'}
             </h1>
-            <p className="text-sm text-ink-600 mt-2 max-w-lg">
+            <p className="text-sm sm:text-[15px] text-ink-600 mt-2.5 max-w-xl leading-relaxed">
               {upcoming.length > 0
                 ? 'Revisá el estado de tus autorizaciones o creá una nueva cuando la necesites.'
                 : 'Cuando necesites un retiro, podés cargar la autorización en menos de un minuto.'}
             </p>
           </div>
-          <div className="mt-5 lg:mt-0 flex flex-wrap gap-2 lg:flex-col lg:w-56 lg:shrink-0">
-            <Button onClick={() => navigate('/familia/autorizaciones/nueva')} icon={<I.Plus size={18} />} full>
-              Nueva autorización
-            </Button>
-            <Button variant="secondary" onClick={() => navigate('/familia/autorizaciones')} icon={<I.List size={16} />} full>
-              Ver historial
-            </Button>
+
+          {/* Stat tiles */}
+          <div className="mt-6 lg:mt-0 grid grid-cols-3 gap-3 lg:gap-4 lg:shrink-0">
+            {stats.map(s => (
+              <div
+                key={s.label}
+                className="rounded-2xl bg-white/85 border border-warm-line/80 px-3 py-3.5 lg:px-5 lg:py-4 text-center lg:text-left lg:min-w-[120px] shadow-soft"
+              >
+                <div className={`mx-auto lg:mx-0 h-9 w-9 rounded-xl ${s.bg} ${s.color} flex items-center justify-center mb-2`}>
+                  {s.icon}
+                </div>
+                <div className="text-2xl lg:text-3xl font-extrabold text-ink-900 leading-none">{s.count}</div>
+                <div className="text-[11px] lg:text-xs text-ink-500 font-semibold mt-1">{s.label}</div>
+              </div>
+            ))}
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Two-column layout on desktop */}
-      <div className="lg:grid lg:grid-cols-[1fr_300px] lg:gap-6 space-y-6 lg:space-y-0">
+      {/* ── Two-column desktop layout ── */}
+      <div className="grid gap-6 lg:gap-8 lg:grid-cols-[1fr_340px]">
 
-        {/* Left column — main content */}
-        <div className="space-y-6 min-w-0">
+        {/* Left — main content */}
+        <div className="space-y-6 lg:space-y-8 min-w-0">
 
-          {/* Students grid */}
+          {/* Students */}
           <section>
-            <header className="flex items-center justify-between mb-3 px-0.5">
-              <h2 className="font-bold text-ink-900">Tus hijos/as</h2>
-              <span className="text-xs text-ink-400 font-medium">{students.length} alumno/s</span>
+            <header className="flex items-center justify-between mb-3.5 px-0.5">
+              <h2 className="text-lg font-bold text-ink-900">Tus hijos/as</h2>
+              <span className="text-xs text-ink-400 font-semibold">{students.length} alumno/s</span>
             </header>
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4">
               {students.map(s => (
                 <Link
                   key={s.id}
                   to={`/familia/autorizaciones/nueva?student=${s.id}`}
-                  className="card p-4 flex items-center gap-3 hover:shadow-glow transition group"
+                  className="card p-4 flex items-center gap-3 hover:shadow-glow hover:-translate-y-0.5 transition-all group"
                 >
-                  <Avatar name={s.full_name} color={s.avatar_color} size={44} />
+                  <Avatar name={s.full_name} color={s.avatar_color} size={46} />
                   <div className="min-w-0 flex-1">
                     <div className="font-bold text-ink-900 truncate">{s.full_name}</div>
                     <div className="text-xs text-ink-500">{s.course} · {s.level}</div>
                   </div>
-                  <I.ChevronRight size={16} className="ml-auto text-ink-300 group-hover:text-peach-500 shrink-0" />
+                  <I.ChevronRight size={16} className="ml-auto text-ink-300 group-hover:text-peach-500 shrink-0 transition" />
                 </Link>
               ))}
               {!students.length && (
-                <div className="col-span-full">
+                <div className="col-span-full card">
                   <EmptyState
                     title="Sin alumnos vinculados"
                     description="Pedile a secretaría que asocie tu cuenta con tu hijo/a."
@@ -109,38 +117,40 @@ export function FamilyDashboard() {
 
           {/* Upcoming authorizations */}
           <section>
-            <header className="flex items-center justify-between mb-3 px-0.5">
-              <h2 className="font-bold text-ink-900">Próximas autorizaciones</h2>
+            <header className="flex items-center justify-between mb-3.5 px-0.5">
+              <h2 className="text-lg font-bold text-ink-900">Próximas autorizaciones</h2>
               <Link to="/familia/autorizaciones" className="text-xs font-bold text-peach-700 hover:underline">
                 Ver todas →
               </Link>
             </header>
 
             {upcoming.length === 0 ? (
-              <EmptyState
-                title="Sin retiros próximos"
-                description="Creá una autorización cuando necesites que alguien retire a tu hijo/a antes de hora."
-                action={
-                  <Button onClick={() => navigate('/familia/autorizaciones/nueva')} icon={<I.Plus size={18} />}>
-                    Crear autorización
-                  </Button>
-                }
-              />
+              <div className="card">
+                <EmptyState
+                  title="Sin retiros próximos"
+                  description="Creá una autorización cuando necesites que alguien retire a tu hijo/a antes de hora."
+                  action={
+                    <Button onClick={() => navigate('/familia/autorizaciones/nueva')} icon={<I.Plus size={18} />}>
+                      Crear autorización
+                    </Button>
+                  }
+                />
+              </div>
             ) : (
-              <div className="space-y-2.5">
-                {upcoming.slice(0, 5).map(a => (
+              <div className="grid sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-3">
+                {upcoming.slice(0, 6).map(a => (
                   <Link
                     key={a.id}
                     to={`/familia/autorizaciones/${a.id}`}
-                    className="card p-4 flex items-center gap-3 hover:shadow-glow transition"
+                    className="card p-4 flex items-center gap-3 hover:shadow-glow hover:-translate-y-0.5 transition-all"
                   >
-                    <Avatar name={a.student.full_name} color={a.student.avatar_color} size={44} />
+                    <Avatar name={a.student.full_name} color={a.student.avatar_color} size={46} />
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center justify-between gap-2">
                         <div className="font-bold text-ink-900 truncate">{a.student.full_name}</div>
                         <StatusBadge status={a.status} size="sm" />
                       </div>
-                      <div className="text-xs text-ink-500 mt-0.5 flex items-center gap-2 flex-wrap">
+                      <div className="text-xs text-ink-500 mt-1 flex items-center gap-2 flex-wrap">
                         <span className="flex items-center gap-1">
                           <I.Calendar size={12} /> {formatDateLong(a.date)}
                         </span>
@@ -153,7 +163,6 @@ export function FamilyDashboard() {
                         Retira: <span className="text-ink-700 font-medium">{a.pickup_adult_name}</span>
                       </div>
                     </div>
-                    <I.ChevronRight size={18} className="text-ink-300 shrink-0" />
                   </Link>
                 ))}
               </div>
@@ -161,76 +170,26 @@ export function FamilyDashboard() {
           </section>
         </div>
 
-        {/* Right sidebar — desktop only */}
-        <div className="hidden lg:flex lg:flex-col lg:gap-5">
-
-          {/* Stats summary */}
-          <div className="card p-5">
-            <h3 className="font-bold text-ink-900 mb-4">Resumen</h3>
-            <div className="space-y-3">
-              {[
-                { label: 'Pendientes', count: statusCounts.pending, color: 'text-amber-600', bg: 'bg-amber-50', icon: <I.Clock size={16} /> },
-                { label: 'Aprobadas', count: statusCounts.approved, color: 'text-sage-600', bg: 'bg-sage-100', icon: <I.CheckCircle size={16} /> },
-                { label: 'Completadas', count: statusCounts.completed, color: 'text-ink-500', bg: 'bg-cream-100', icon: <I.Shield size={16} /> },
-              ].map(s => (
-                <div key={s.label} className="flex items-center justify-between">
-                  <div className="flex items-center gap-2.5">
-                    <div className={`h-8 w-8 rounded-xl ${s.bg} ${s.color} flex items-center justify-center`}>
-                      {s.icon}
-                    </div>
-                    <span className="text-sm font-medium text-ink-700">{s.label}</span>
-                  </div>
-                  <span className="text-lg font-extrabold text-ink-900">{s.count}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Quick actions */}
-          <div className="card p-5">
-            <h3 className="font-bold text-ink-900 mb-3">Acciones rápidas</h3>
-            <div className="space-y-2">
-              <button
-                onClick={() => navigate('/familia/autorizaciones/nueva')}
-                className="w-full flex items-center gap-3 p-3 rounded-2xl bg-peach-50 border border-peach-200/60 hover:bg-peach-100 transition text-left group"
-              >
-                <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-peach-400 to-peach-600 text-white flex items-center justify-center shrink-0">
-                  <I.Plus size={16} />
-                </div>
-                <div>
-                  <div className="text-sm font-bold text-ink-900">Nueva autorización</div>
-                  <div className="text-xs text-ink-500">Autorizar un retiro</div>
-                </div>
-              </button>
-              <button
-                onClick={() => navigate('/familia/autorizaciones')}
-                className="w-full flex items-center gap-3 p-3 rounded-2xl bg-cream-50 border border-warm-line hover:bg-cream-100 transition text-left"
-              >
-                <div className="h-9 w-9 rounded-xl bg-gradient-soft border border-peach-200/60 text-peach-600 flex items-center justify-center shrink-0">
-                  <I.List size={16} />
-                </div>
-                <div>
-                  <div className="text-sm font-bold text-ink-900">Ver historial</div>
-                  <div className="text-xs text-ink-500">Todas tus solicitudes</div>
-                </div>
-              </button>
-            </div>
-          </div>
+        {/* Right sidebar */}
+        <aside className="space-y-6 lg:space-y-8 min-w-0">
 
           {/* Recent activity */}
-          {auths.length > 0 && (
-            <div className="card overflow-hidden">
-              <div className="px-5 pt-5 pb-3">
-                <h3 className="font-bold text-ink-900">Actividad reciente</h3>
-              </div>
+          <div className="card overflow-hidden">
+            <div className="px-5 pt-5 pb-3 flex items-center justify-between">
+              <h3 className="font-bold text-ink-900">Actividad reciente</h3>
+              <Link to="/familia/autorizaciones" className="text-xs font-bold text-peach-700 hover:underline">
+                Ver todas
+              </Link>
+            </div>
+            {auths.length > 0 ? (
               <div className="divide-y divide-warm-line/70">
-                {auths.slice(0, 4).map(a => (
+                {auths.slice(0, 5).map(a => (
                   <Link
                     key={a.id}
                     to={`/familia/autorizaciones/${a.id}`}
                     className="flex items-center gap-3 px-5 py-3 hover:bg-cream-50 transition"
                   >
-                    <Avatar name={a.student.full_name} color={a.student.avatar_color} size={34} />
+                    <Avatar name={a.student.full_name} color={a.student.avatar_color} size={36} />
                     <div className="min-w-0 flex-1">
                       <div className="text-sm font-semibold text-ink-900 truncate">{a.student.full_name}</div>
                       <div className="text-xs text-ink-400">{relative(a.updated_at)}</div>
@@ -239,39 +198,36 @@ export function FamilyDashboard() {
                   </Link>
                 ))}
               </div>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Recent activity — mobile/tablet only */}
-      {auths.length > 0 && (
-        <section className="lg:hidden">
-          <header className="px-0.5 mb-3">
-            <h2 className="font-bold text-ink-900">Actividad reciente</h2>
-          </header>
-          <div className="card divide-y divide-warm-line/70">
-            {auths.slice(0, 5).map(a => (
-              <Link
-                key={a.id}
-                to={`/familia/autorizaciones/${a.id}`}
-                className="flex items-center gap-3 p-3.5 hover:bg-cream-50 transition"
-              >
-                <div className="h-10 w-10 rounded-xl bg-gradient-soft flex items-center justify-center text-peach-600 shrink-0">
-                  <I.Shield size={18} />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <div className="text-sm font-semibold text-ink-900 truncate">
-                    {a.code} · {a.student.full_name}
-                  </div>
-                  <div className="text-xs text-ink-400">{relative(a.updated_at)}</div>
-                </div>
-                <StatusBadge status={a.status} size="sm" />
-              </Link>
-            ))}
+            ) : (
+              <div className="px-5 pb-6 pt-2 text-sm text-ink-400">
+                Todavía no hay movimientos. Tus solicitudes aparecerán acá.
+              </div>
+            )}
           </div>
-        </section>
-      )}
+
+          {/* How it works */}
+          <div className="card p-5">
+            <h3 className="font-bold text-ink-900 mb-3.5">¿Cómo funciona?</h3>
+            <ol className="space-y-3">
+              {[
+                { n: '1', t: 'Cargás la autorización', d: 'Elegí alumno, fecha y quién retira.' },
+                { n: '2', t: 'El colegio la revisa', d: 'Secretaría la aprueba u observa.' },
+                { n: '3', t: 'Retiro seguro', d: 'En portería validan los datos y registran la salida.' },
+              ].map(s => (
+                <li key={s.n} className="flex gap-3">
+                  <span className="h-7 w-7 shrink-0 rounded-full bg-gradient-to-br from-peach-400 to-peach-600 text-white text-xs font-bold flex items-center justify-center">
+                    {s.n}
+                  </span>
+                  <div className="min-w-0">
+                    <div className="text-sm font-semibold text-ink-900">{s.t}</div>
+                    <div className="text-xs text-ink-500 leading-snug">{s.d}</div>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </aside>
+      </div>
     </div>
   );
 }

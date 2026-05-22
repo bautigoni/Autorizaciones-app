@@ -37,4 +37,8 @@ export const I = {
   CheckCircle: ({ size, className, strokeWidth }: P) => <svg {...base(size, strokeWidth)} className={className}><circle cx="12" cy="12" r="9" /><path d="M8 12l3 3 5-6" /></svg>,
   ArrowRight: ({ size, className, strokeWidth }: P) => <svg {...base(size, strokeWidth)} className={className}><path d="M5 12h14M13 5l7 7-7 7" /></svg>,
   ArrowLeft: ({ size, className, strokeWidth }: P) => <svg {...base(size, strokeWidth)} className={className}><path d="M19 12H5M11 5l-7 7 7 7" /></svg>,
+  Chart: ({ size, className, strokeWidth }: P) => <svg {...base(size, strokeWidth)} className={className}><path d="M3 3v16a2 2 0 002 2h16" /><path d="M8 16v-5M13 16V7M18 16v-3" /></svg>,
+  TrendingUp: ({ size, className, strokeWidth }: P) => <svg {...base(size, strokeWidth)} className={className}><path d="M3 17l6-6 4 4 8-8" /><path d="M17 7h4v4" /></svg>,
+  Trophy: ({ size, className, strokeWidth }: P) => <svg {...base(size, strokeWidth)} className={className}><path d="M7 4h10v5a5 5 0 01-10 0V4z" /><path d="M7 6H4v2a3 3 0 003 3M17 6h3v2a3 3 0 01-3 3M9 21h6M12 17v4" /></svg>,
+  PieChart: ({ size, className, strokeWidth }: P) => <svg {...base(size, strokeWidth)} className={className}><path d="M12 3a9 9 0 109 9h-9V3z" /><path d="M12 3v9h9A9 9 0 0012 3z" /></svg>,
 };

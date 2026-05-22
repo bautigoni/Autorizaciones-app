@@ -17,6 +17,12 @@ import { InternalDashboard } from './pages/internal/Dashboard';
 import { InternalTable } from './pages/internal/Table';
 import { InternalAuthDetail } from './pages/internal/AuthDetail';
 import { InternalStudent } from './pages/internal/Student';
+import { LoadingState } from './components/States';
+
+// Analytics is lazy-loaded so the recharts bundle stays out of the initial load
+const InternalAnalytics = React.lazy(() =>
+  import('./pages/internal/analytics/Analytics').then(m => ({ default: m.InternalAnalytics })),
+);
 
 
 export function App() {
@@ -41,6 +47,14 @@ export function App() {
         <Route path="autorizaciones" element={<InternalTable />} />
         <Route path="autorizaciones/:id" element={<InternalAuthDetail />} />
         <Route path="alumnos/:id" element={<InternalStudent />} />
+        <Route
+          path="analytics"
+          element={
+            <React.Suspense fallback={<div className="py-16"><LoadingState label="Cargando analítica..." /></div>}>
+              <InternalAnalytics />
+            </React.Suspense>
+          }
+        />
       </Route>
 
       <Route path="/" element={<RoleHome />} />

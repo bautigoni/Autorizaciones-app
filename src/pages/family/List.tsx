@@ -42,15 +42,14 @@ export function FamilyList() {
   }), [items, tab, q]);
 
   return (
-    <div className="space-y-4 max-w-4xl">
+    <div className="space-y-5">
       <div>
-        <h1 className="text-2xl font-extrabold text-ink-900">Mis autorizaciones</h1>
-        <p className="text-sm text-ink-500 mt-0.5">Historial completo de retiros solicitados.</p>
+        <h1 className="text-2xl lg:text-[1.75rem] font-extrabold text-ink-900">Mis autorizaciones</h1>
+        <p className="text-sm text-ink-500 mt-1">Historial completo de retiros solicitados.</p>
       </div>
 
-      <Input icon={<I.Search size={18} />} placeholder="Buscar por código, alumno, motivo..." value={q} onChange={e => setQ(e.target.value)} />
-
-      <div className="flex gap-1.5 overflow-x-auto no-scrollbar -mx-1 px-1">
+      <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex gap-1.5 overflow-x-auto no-scrollbar -mx-1 px-1">
         {TABS.map(t => {
           const active = tab === t.id;
           const count = t.id === 'all' ? items.length : items.filter(i => i.status === t.id).length;
@@ -69,6 +68,10 @@ export function FamilyList() {
             </button>
           );
         })}
+        </div>
+        <div className="sm:w-72 sm:shrink-0">
+          <Input icon={<I.Search size={18} />} placeholder="Buscar código, alumno, motivo..." value={q} onChange={e => setQ(e.target.value)} />
+        </div>
       </div>
 
       {loading ? <LoadingState /> : filtered.length === 0 ? (
@@ -77,9 +80,9 @@ export function FamilyList() {
           description={q ? 'Probá ajustar la búsqueda o el filtro seleccionado.' : 'No tenés autorizaciones en este estado.'}
         />
       ) : (
-        <div className="space-y-2.5 sm:grid sm:grid-cols-2 sm:gap-3 sm:space-y-0 lg:grid-cols-1 lg:space-y-2.5 lg:block">
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
           {filtered.map(a => (
-            <Link key={a.id} to={`/familia/autorizaciones/${a.id}`} className="card p-4 flex items-center gap-3 hover:shadow-glow transition">
+            <Link key={a.id} to={`/familia/autorizaciones/${a.id}`} className="card p-4 flex items-center gap-3 hover:shadow-glow hover:-translate-y-0.5 transition-all">
               <Avatar name={a.student.full_name} color={a.student.avatar_color} size={44} />
               <div className="min-w-0 flex-1">
                 <div className="flex items-center justify-between gap-2 mb-0.5">

@@ -120,14 +120,14 @@ export function FamilyNew() {
   }
 
   return (
-    <div className="space-y-5 max-w-2xl">
+    <div className="space-y-5 max-w-2xl mx-auto">
       <button onClick={() => navigate(-1)} className="inline-flex items-center gap-1.5 text-sm font-semibold text-ink-500 hover:text-peach-700">
         <I.ArrowLeft size={16} /> Volver
       </button>
 
       <header>
-        <h1 className="text-2xl font-extrabold text-ink-900">Nueva autorización</h1>
-        <p className="text-sm text-ink-500 mt-0.5">3 pasos rápidos para autorizar un retiro.</p>
+        <h1 className="text-2xl lg:text-[1.75rem] font-extrabold text-ink-900">Nueva autorización</h1>
+        <p className="text-sm text-ink-500 mt-1">3 pasos rápidos para autorizar un retiro.</p>
       </header>
 
       {/* Stepper */}

@@ -115,3 +115,49 @@ export interface AppNotification {
   read: boolean;
   created_at: string;
 }
+
+// --- Analytics
+export type AnalyticsGranularity = 'day' | 'week' | 'month';
+
+export interface AnalyticsRange {
+  from?: string; // YYYY-MM-DD
+  to?: string;   // YYYY-MM-DD
+}
+
+export interface AnalyticsSummary {
+  totalRequests: number;
+  totalPickups: number;
+  approvalRate: number;            // 0..1
+  avgApprovalHours: number | null; // null when no reviewed authorizations
+}
+
+export interface PickupsBucket {
+  period: string;   // YYYY-MM-DD (day/week start) or YYYY-MM-01 (month)
+  requests: number;
+  pickups: number;
+}
+
+export interface StatusSlice {
+  status: AuthStatus;
+  count: number;
+}
+
+export interface PeakTimes {
+  byHour: { hour: number; count: number }[];
+  byWeekday: { weekday: number; count: number }[]; // 0=Sunday .. 6=Saturday
+}
+
+export interface TopStudent {
+  student_id: number;
+  full_name: string;
+  course: string;
+  level: string;
+  count: number;   // total requests in range
+  pickups: number; // completed pick-ups in range
+}
+
+export interface TopFamily {
+  user_id: number;
+  full_name: string;
+  count: number;
+}

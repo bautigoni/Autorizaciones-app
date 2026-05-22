@@ -1,5 +1,7 @@
 import type {
   AuthorizationFull, DashboardMetrics, Student, AuthorizedAdult, User, AuthStatus, AppNotification,
+  AnalyticsRange, AnalyticsGranularity, AnalyticsSummary, PickupsBucket, StatusSlice,
+  PeakTimes, TopStudent, TopFamily,
 } from '@shared/types';
 
 const BASE = '/api';
@@ -24,6 +26,15 @@ async function req<T>(path: string, init: RequestInit = {}): Promise<T> {
     throw new Error(msg);
   }
   return res.json() as Promise<T>;
+}
+
+function analyticsQs(r: AnalyticsRange, extra?: Record<string, string>): string {
+  const q = new URLSearchParams();
+  if (r.from) q.set('from', r.from);
+  if (r.to) q.set('to', r.to);
+  if (extra) Object.entries(extra).forEach(([k, v]) => q.set(k, v));
+  const s = q.toString();
+  return s ? `?${s}` : '';
 }
 
 export const api = {
@@ -67,6 +78,19 @@ export const api = {
 
   metrics: (date?: string) => req<DashboardMetrics>('/metrics' + (date ? `?date=${date}` : '')),
   metricsWeekly: () => req<(DashboardMetrics & { date: string })[]>('/metrics/weekly'),
+
+  analyticsSummary: (r: AnalyticsRange) =>
+    req<AnalyticsSummary>('/analytics/summary' + analyticsQs(r)),
+  analyticsPickups: (r: AnalyticsRange, granularity: AnalyticsGranularity) =>
+    req<PickupsBucket[]>('/analytics/pickups-over-time' + analyticsQs(r, { granularity })),
+  analyticsStatusBreakdown: (r: AnalyticsRange) =>
+    req<StatusSlice[]>('/analytics/status-breakdown' + analyticsQs(r)),
+  analyticsPeakTimes: (r: AnalyticsRange) =>
+    req<PeakTimes>('/analytics/peak-times' + analyticsQs(r)),
+  analyticsTopStudents: (r: AnalyticsRange) =>
+    req<TopStudent[]>('/analytics/top-students' + analyticsQs(r)),
+  analyticsTopFamilies: (r: AnalyticsRange) =>
+    req<TopFamily[]>('/analytics/top-families' + analyticsQs(r)),
 
   listNotifications: () => req<AppNotification[]>('/notifications'),
   getUnreadNotificationsCount: () => req<{ count: number }>('/notifications/unread-count'),

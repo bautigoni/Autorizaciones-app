@@ -89,17 +89,15 @@ export function InternalTable() {
         </div>
       </div>
 
-      {/* Filters */}
-      <div className="card p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-        <div className="lg:col-span-2">
+      {/* Filters — relative z-20 so open dropdowns paint above the table card below */}
+      <div className="card relative z-20 p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
+        <div className="sm:col-span-2 lg:col-span-2">
           <Input icon={<I.Search size={18} />} placeholder="Buscar alumno, código, DNI..." value={search} onChange={e => set('search', e.target.value)} />
         </div>
         <Select full value={status} options={STATUS_OPTIONS as any} onChange={v => set('status', String(v))} />
         <Input type="date" icon={<I.Calendar size={16} />} value={date} onChange={e => set('date', e.target.value)} placeholder="Fecha" />
-        <div className="grid grid-cols-2 gap-2">
-          <Select full value={level} options={[{ value: 'all', label: 'Todos los niveles' }, ...levels.map(l => ({ value: l, label: l }))]} onChange={v => set('level', String(v))} />
-          <Select full value={course} options={[{ value: 'all', label: 'Todos los cursos' }, ...courses.map(c => ({ value: c, label: c }))]} onChange={v => set('course', String(v))} />
-        </div>
+        <Select full value={level} options={[{ value: 'all', label: 'Todos los niveles' }, ...levels.map(l => ({ value: l, label: l }))]} onChange={v => set('level', String(v))} />
+        <Select full value={course} options={[{ value: 'all', label: 'Todos los cursos' }, ...courses.map(c => ({ value: c, label: c }))]} onChange={v => set('course', String(v))} />
       </div>
 
       {/* Table */}

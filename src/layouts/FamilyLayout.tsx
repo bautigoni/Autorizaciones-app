@@ -32,9 +32,11 @@ export function FamilyLayout() {
     <div className="min-h-screen bg-cream-50 flex flex-col">
       {/* ── Header ── */}
       <header className="sticky top-0 z-30 bg-white/85 backdrop-blur-lg border-b border-warm-line">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
-          <button onClick={() => navigate('/familia')} className="shrink-0">
-            <Logo variant="lockup" size={36} />
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 h-16 lg:h-[72px] flex items-center justify-between gap-6">
+          <button onClick={() => navigate('/familia')} className="shrink-0" aria-label="Ir al inicio">
+            <span className="sm:hidden"><Logo variant="lockup" size={26} /></span>
+            <span className="hidden sm:inline-flex lg:hidden"><Logo variant="lockup" size={31} /></span>
+            <span className="hidden lg:inline-flex"><Logo variant="lockup" size={37} /></span>
           </button>
 
           {/* Desktop nav */}
@@ -99,7 +101,7 @@ export function FamilyLayout() {
       </header>
 
       {/* Main content — extra bottom padding on mobile for FAB + nav */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-36 md:pb-10">
+      <main className="flex-1 max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-10 pt-6 lg:pt-8 pb-36 md:pb-12">
         <Outlet />
       </main>
 

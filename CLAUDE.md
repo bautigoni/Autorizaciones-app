@@ -18,7 +18,7 @@ npm run dev:client       # vite only (port 5173)
 npm run dev:server       # api only (port 5174)
 npm run db:reset         # wipe DB and reseed
 npm run build            # build client to dist/
-```
+``` 
 
 Vite proxies `/api/*` to the Express server, so the frontend talks to a single origin.
 
